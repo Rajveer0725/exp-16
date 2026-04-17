@@ -8,12 +8,20 @@ def home():
 
 @app.route("/add")
 def add():
+    a = request.args.get("a")
+    b = request.args.get("b")
+
+    # Check if parameters are missing
+    if a is None or b is None:
+        return jsonify({"error": "Parameters 'a' and 'b' are required"}), 400
+
     try:
-        a = int(request.args.get("a"))
-        b = int(request.args.get("b"))
+        a = int(a)
+        b = int(b)
         return jsonify({"result": a + b})
-    except (TypeError, ValueError):
-        return jsonify({"error": "Please provide valid integers a and b"}), 400
+    except ValueError:
+        return jsonify({"error": "Please provide valid integers"}), 400
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
