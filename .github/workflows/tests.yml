@@ -1,4 +1,4 @@
-name: Fullstack Tests
+name: Fullstack CI
 
 on:
   push:
@@ -15,16 +15,21 @@ jobs:
         working-directory: Testing/Backend
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - run: pip install -r requirements.txt
-      - run: pip install pytest
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
 
-      - run: pytest
+      - name: Run Backend Tests
+        run: pytest -v
 
   frontend-test:
     runs-on: ubuntu-latest
@@ -34,11 +39,16 @@ jobs:
         working-directory: Testing/Frontend
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - run: npm install
-      - run: npm test
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Frontend Tests
+        run: npm test
